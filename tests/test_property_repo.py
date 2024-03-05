@@ -18,7 +18,6 @@ def test_all(db_connection):
                         Property(5, "2RJ2- Hyper center.", "Entire rental unit in Tours", 472, 4, True)
                         ] 
     
-
 def test_find(db_connection):
     # db_connection.seed('seeds/Users.sql')
     db_connection.seed('seeds/properties.sql')
