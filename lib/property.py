@@ -12,7 +12,7 @@ class Property:
         return self.__dict__ == other.__dict__
     
     def __repr__(self):
-        return f"{self.name}\n {self.description}\n £{self.price}\n Owner: {self.user_id} {self.aval_start}\n {self.aval_end}\n "
+        return f"{self.name}\n {self.description}\n £{self.price}\n Owner: {self.user_id}\n Available start date: {self.aval_start}\n Available end date: {self.aval_end}"
         
         
         
