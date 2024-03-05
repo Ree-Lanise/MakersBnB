@@ -90,4 +90,13 @@ def test_we_have_details_before_login(page, test_web_address):
     errors = page.locator(".t-errors")
     expect(errors).to_have_text("Username or Password Invalid - Please Try Again")
 
-"""tests we """
+"""tests we create a session with a new login"""
+def test_create_session(page, test_web_address):
+    page.set_default_timeout(1000)
+    # we go to the login page 
+    page.goto(f"http://{test_web_address}/login")
+    # we fill in fields and we click the button
+    page.fill("input[name=user]", "Test User")
+    page.fill("input[name=pass]", "Test Pass")
+    page.click("input[type=submit][value='Login']")
+

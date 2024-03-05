@@ -1,4 +1,5 @@
 from lib.user import User
+import hashlib
 
 class UserRepository:
 
@@ -19,3 +20,7 @@ class UserRepository:
         row = rows[0]
         user.id = row["id"]
         return user
+
+
+    def check_password(self, email, password_attempt):
+        pass
