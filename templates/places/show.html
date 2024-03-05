@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{ property.name }}</title>
+        <link rel="stylesheet" href="/static/style.css" >
+    </head>
+    <body>
+        <h1>Book this Place</h1>
+        <div><a href="/places">Book a Place</a> | <a href="/places/new">List a Place</a></div>
+        <br>
+        <h2>{{ property.name }}</h2>
+        <p>{{ property.description }}</p>
+        <p>£{{ property.price }} per day</p>
+        <br>
+        <h4><a href="/">Return to Homepage</a></h4>
+    </body>
+</html>

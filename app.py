@@ -1,6 +1,7 @@
 import os
 from flask import Flask, request, render_template, redirect
 from lib.database_connection import get_flask_database_connection
+from lib.property_repo import PropertyRepository
 
 # Create a new Flask app
 app = Flask(__name__)
@@ -43,6 +44,18 @@ def get_places():
 @app.route('/places/new', methods=['GET'])
 def get_add_new_place():
     return render_template('places/new.html')
+
+# GET /places/1
+# Returns the page for a place by id
+# Try it:
+#   ; open http://localhost:5000/places/1
+@app.route('/places/<int:id>', methods=['GET'])
+def get_place_by_id(id):
+    connection = get_flask_database_connection(app)
+    property_repo = PropertyRepository(connection)
+    property = property_repo.find(id)
+    return render_template('places/show.html', property=property)
+
 
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database
