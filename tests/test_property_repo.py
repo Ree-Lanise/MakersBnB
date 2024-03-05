@@ -28,10 +28,9 @@ def test_find(db_connection):
 def test_create_space(db_connection):
     db_connection.seed('seeds/properties.sql')
     repo = PropertyRepository(db_connection)
-    property_instance = Property(None, 'Romantic and Magical Hobbit Retreat', 'Tiny Home', 95, 4, False)
-    result = repo.create_space(property_instance)
-    assert result == "Space successfully created!"
+    property_instance = repo.create_space(Property(None, 'Romantic and Magical Hobbit Retreat', 'Tiny Home', 95, 4, False))
+    result = repo.find(property_instance.id)
+    assert result == property_instance
 
 
 
- 
