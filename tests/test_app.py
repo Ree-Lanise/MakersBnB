@@ -40,3 +40,23 @@ def test_get_add_new_place(page, test_web_address):
 
     # We assert that it has the text "List a new Place"
     expect(h1_tag).to_have_text("List a new Place")
+
+
+
+'''
+Test we can view spaces
+'''
+
+def test_get_view_spaces(page, test_web_address):
+    page.goto(f"http://{test_web_address}/places/view_spaces")
+
+    h1_tag = page.locator("h1")
+    expect(h1_tag).to_have_text("Property Listings")
+
+
+
+def test_view_property(page, test_web_address, db_connection):
+    db_connection.seed("seeds/properties.sql")
+    page.goto(f"http://{test_web_address}/places/individual_property/1")
+    h2_tag = page.locator("h2")
+    expect(h2_tag).to_have_text("Chestnut Eco Lodge Woodland Escape")

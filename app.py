@@ -1,6 +1,8 @@
 import os
 from flask import Flask, request, render_template
 from lib.database_connection import get_flask_database_connection
+from lib.property_repo import PropertyRepository
+
 
 # Create a new Flask app
 app = Flask(__name__)
@@ -30,6 +32,27 @@ def get_places():
 @app.route('/places/new', methods=['GET'])
 def get_add_new_place():
     return render_template('places/new.html')
+
+
+# /places/view_spaces
+# Lists current spaces
+# Try it:
+#   ; open http://localhost:5000/places/view_spaces
+@app.route('/places/view_spaces')
+def view_spaces():
+    return render_template('/places/view_spaces.html')
+
+# /places/view_spaces
+# Lists current property
+# Try it:
+#   ; open http://localhost:5000/places/view_spaces/individual_property
+@app.route('/places/individual_property/<int:id>')
+def view_property(id):
+    connection = get_flask_database_connection(app)
+    repository = PropertyRepository(connection)
+    property = repository.find(id)
+    return render_template('/places/individual_property.html', property=property)
+
 
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database
