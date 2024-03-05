@@ -26,3 +26,13 @@ def test_find(db_connection):
     property = repo.find(1)
     assert property == Property(1, 'Chestnut Eco Lodge Woodland Escape', 'House with garden', 101, 1, False)
 
+def test_create_space(db_connection):
+    db_connection.seed('seeds/properties.sql')
+    repo = PropertyRepository(db_connection)
+    property_instance = Property(None, 'Romantic and Magical Hobbit Retreat', 'Tiny Home', 95, 4, False)
+    result = repo.create_space(property_instance)
+    assert result == "Space successfully created!"
+
+
+
+ 

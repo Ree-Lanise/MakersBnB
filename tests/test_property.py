@@ -10,7 +10,7 @@ def test_initializer():
     assert property.name == 'Nice Cottage'
     assert property.description == 'Nice Cottage'
     assert property.price == 100
-    assert property.owner == 'George' #possibly user_id
+    assert property.user_id == 'George' #possibly user_id
     assert property.booked_status  == False
     
 def test_equal():
