@@ -24,13 +24,3 @@ class PropertyRepository:
         "INSERT INTO properties (name, description, price, user_id, booked_status) VALUES (%s, %s, %s, %s, %s)", 
         [property_instance.name, property_instance.description, property_instance.price, property_instance.user_id, property_instance.booked_status])
         return "Space successfully created!"
-    
-    
-    
-        
-        
-        
-        
-        
-
-
