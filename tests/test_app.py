@@ -1,4 +1,5 @@
 from playwright.sync_api import Page, expect
+from flask import session
 
 # Tests for your routes go here
 
@@ -88,3 +89,5 @@ def test_we_have_details_before_login(page, test_web_address):
     # we check the class t-error
     errors = page.locator(".t-errors")
     expect(errors).to_have_text("Username or Password Invalid - Please Try Again")
+
+"""tests we """
