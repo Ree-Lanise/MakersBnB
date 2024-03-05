@@ -23,4 +23,9 @@ class UserRepository:
 
 
     def check_password(self, email, password_attempt):
-        pass
+        # hash the password attempt to hide it
+        binary_password_attempt = password_attempt.encode("utf-8")
+        hashed_password_attempt = hashlib.sha256(binary_password_attempt).hexdigest()
+
+        # check whether there is a user in the database with the given email and 
+        # a matching password using a SELECT statement
