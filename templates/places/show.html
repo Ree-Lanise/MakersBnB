@@ -12,6 +12,14 @@
         <p>{{ property.description }}</p>
         <p>£{{ property.price }} per day</p>
         <br>
+        <form method="POST" action="/places">
+            <label>Book from: </label><input type="date" id="start_date" value="{{ property.aval_start }}" min="{{ property.aval_start }}" max="{{ property.aval_end }}" required>
+            <label>to: </label><input type="date" id="end_date" value="{{ property.aval_end }}" min="{{ property.aval_start }}" max="{{ property.aval_end }}" required>
+            <br>
+            <br>
+            <input type="submit" value="Make Booking">
+        </form>
+        <br>
         <h4><a href="/">Return to Homepage</a></h4>
     </body>
 </html>

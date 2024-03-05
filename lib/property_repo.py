@@ -16,7 +16,8 @@ class PropertyRepository:
     def find(self, id):
         rows = self._connection.execute("SELECT * FROM properties WHERE id = %s", [id])
         row = rows[0]
-        return Property(row["id"], row["name"], row["description"], row["price"], row["user_id"], row['available_start'], row['available_end'])
+        print(row)
+        return Property(row["id"], row["name"], row["description"], row["price"], row["user_id"], row["available_start"], row["available_end"])
     
     
     def create_space(self, property_instance):
