@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{ property.name }}</title>
+        <link rel="stylesheet" href="/static/style.css" >
+    </head>
+    <body>
+        <h1>Congratulations on your booking!</h1>
+        <div><a href="/places">Book a Place</a> | <a href="/places/new">List a Place</a></div>
+        <br>
+        <h2>Your booking details: </h2>
+        <p>Booking Reference: {{ booking.id }}</p>
+        <h2>{{ property.name }}</h2>
+        <p>{{ property.description }}</p>
+        <p>From {{ booking.starting_date }} to {{ booking.end_date }}</p>
+        <br>
+        <br>
+        <h4><a href="/places">Return to list of places</a></h4>
+    </body>
+</html>
