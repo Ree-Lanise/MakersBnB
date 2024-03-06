@@ -43,6 +43,21 @@ def test_get_add_new_place(page, test_web_address):
     # We assert that it has the text "List a new Place"
     expect(h1_tag).to_have_text("List a new Place")
 
+
+
+'''
+Test we can view spaces
+'''
+
+def test_get_view_spaces(page, test_web_address):
+    page.goto(f"http://{test_web_address}/places")
+
+    h1_tag = page.locator("h1")
+    expect(h1_tag).to_have_text("Book a Place")
+
+
+
+
 """ we can render the login page """
 
 def test_get_login(page, test_web_address):
