@@ -9,7 +9,7 @@
         <div><a href="/places">Book a Place</a> | <a href="/places/new">List a Place</a></div>
         <br>
         {% for property in properties %}
-            <h3>{{property.name}}</h3>
+            <h3><a href="/places/{{property.id}}">{{property.name}}</a></h3>
             <p>Price: £{{property.price}}/night</p>
         {% endfor %}
         <br>
