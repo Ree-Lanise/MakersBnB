@@ -48,9 +48,9 @@ Test we can view spaces
 '''
 
 def test_get_view_spaces(page, test_web_address):
-    page.goto(f"http://{test_web_address}/places/view_spaces")
+    page.goto(f"http://{test_web_address}/places")
 
     h1_tag = page.locator("h1")
-    expect(h1_tag).to_have_text("Property Listings")
+    expect(h1_tag).to_have_text("Book a Place")
 
 
