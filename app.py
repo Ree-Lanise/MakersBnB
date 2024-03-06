@@ -28,7 +28,10 @@ def get_index():
 
 @app.route("/login", methods=['GET'])
 def login():
-    return render_template('login.html')
+    if 'user_id' in session:
+        return redirect('/')    
+    else: 
+        return render_template('login.html')
 
 @app.route("/login", methods=['POST'])
 def login_post():
@@ -41,19 +44,19 @@ def login_post():
     password = request.form['pass']
     email = request.form['email']
     # we make sure their input is valid
-    if username == "" or password == "" or email == "":
-        return render_template("login.html", errors="Username or Password Invalid")
+    if " " in username  or " " in password or " " in email:
+        return render_template("login.html", errors="can't have spaces")
     
     # we check if the user exists in our database
     user = repo.find_by_email(email)
     
     if user: 
         repo.check_password(password, email)
-        # set the user ID in session
+        # set the user ID and username in session
         session['user_id'] = user.id
+        session['username'] = user.name
         return redirect("/") 
 
-    
     # Finally if they're not in our database but they're given us valid info, we add 
     # them and start their session
     else: 
@@ -61,7 +64,14 @@ def login_post():
         user = repo.find_by_email(email)
         # set the user ID in session 
         session['user_id'] = user.id
+        session['username'] = user.name
         return redirect('/')
+
+@app.route("/logout")
+def logout():
+    session.pop("username", None)
+    session.pop("user_id", None)
+    return redirect("/login")
 
 # GET /places
 # Returns the places page
