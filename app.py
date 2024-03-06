@@ -1,10 +1,14 @@
 import os
-from flask import Flask, request, render_template, redirect
+from flask import Flask, request, render_template, redirect, session
 from lib.database_connection import get_flask_database_connection
+from lib.user_repository import UserRepository
+from lib.user import User 
 from lib.property_repo import PropertyRepository
 
 # Create a new Flask app
 app = Flask(__name__)
+
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 # == Your Routes Here ==
 
@@ -14,7 +18,10 @@ app = Flask(__name__)
 #   ; open http://localhost:5000
 @app.route('/', methods=['GET'])
 def get_index():
-    return render_template('index.html')
+    if 'user_id' not in session:
+        return redirect('/login')
+    else:
+        return render_template('index.html')
 
 @app.route("/login", methods=['GET'])
 def login():
@@ -22,12 +29,36 @@ def login():
 
 @app.route("/login", methods=['POST'])
 def login_post():
+    # we establish a connection to the database 
+    db_connect = get_flask_database_connection(app)
+    repo = UserRepository(db_connect)
+    
+    # we grab the user input from the login page
     username = request.form['user']
     password = request.form['pass']
-    if username == "" or password == "":
+    email = request.form['email']
+    # we make sure their input is valid
+    if username == "" or password == "" or email == "":
         return render_template("login.html", errors="Username or Password Invalid")
-    else:
-        return redirect("/")
+    
+    # we check if the user exists in our database
+    user = repo.find_by_email(email)
+    
+    if user: 
+        repo.check_password(password, email)
+        # set the user ID in session
+        session['user_id'] = user.id
+        return redirect("/") 
+
+    
+    # Finally if they're not in our database but they're given us valid info, we add 
+    # them and start their session
+    else: 
+        repo.create(User(None, username, password, email))
+        user = repo.find_by_email(email)
+        # set the user ID in session 
+        session['user_id'] = user.id
+        return redirect('/')
 
 # GET /places
 # Returns the places page
