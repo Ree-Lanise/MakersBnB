@@ -87,6 +87,17 @@ def get_place_by_id(id):
     property = property_repo.find(id)
     return render_template('places/show.html', property=property)
 
+@app.route("/places", methods=['POST'])
+def login_post():
+    # we establish a connection to the database 
+    db_connect = get_flask_database_connection(app)
+    repo = UserRepository(db_connect)
+    
+    # we grab the user input from the login page
+    username = request.form['user']
+    password = request.form['pass']
+    email = request.form['email']
+
 
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database
