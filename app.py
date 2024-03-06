@@ -4,6 +4,8 @@ from lib.database_connection import get_flask_database_connection
 from lib.user_repository import UserRepository
 from lib.user import User 
 from lib.property_repo import PropertyRepository
+from lib.booking_repository import BookingRepository
+from lib.booking import Booking
 
 # Create a new Flask app
 app = Flask(__name__)
@@ -90,6 +92,27 @@ def get_place_by_id(id):
     property_repo = PropertyRepository(connection)
     property = property_repo.find(id)
     return render_template('places/show.html', property=property)
+
+@app.route('/bookings/<int:id>', methods=['GET'])
+def get_booking_by_id(id):
+    connection = get_flask_database_connection(app)
+    booking_repo = BookingRepository(connection)
+    booking = booking_repo.find(id)
+    property_repo = PropertyRepository(connection)
+    property = property_repo.find(booking.property_id)
+    return render_template('bookings/show.html', booking=booking, property=property)
+
+@app.route('/bookings', methods=['POST'])
+def book_a_place():
+    connection = get_flask_database_connection(app)
+    booking_repo = BookingRepository(connection)
+    property_id = request.form['property_id']
+    owner_id = request.form['owner_id']
+    guest_id = session['user_id']
+    start_date = request.form['start_date']
+    end_date = request.form['end_date']
+    booking = booking_repo.create(Booking(None, property_id, owner_id, guest_id, start_date, end_date))
+    return redirect(f"/bookings/{booking.id}")
 
 
 # These lines start the server if you run this file directly
