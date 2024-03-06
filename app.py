@@ -16,7 +16,10 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 #   ; open http://localhost:5000
 @app.route('/', methods=['GET'])
 def get_index():
-    return render_template('index.html')
+    if 'user_id' not in session:
+        return redirect('/login')
+    else:
+        return render_template('index.html')
 
 @app.route("/login", methods=['GET'])
 def login():
