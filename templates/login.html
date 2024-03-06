@@ -5,23 +5,23 @@
         <link rel="stylesheet" href="/static/style.css" >
     </head>
     <body>
-        <h1>Login</h1>
+        <h1>Makers BnB</h1>
+        <h2>Login</h2>
         <!-- We check to see if there are any errors from a previous submission -->
         {% if errors %}
         <!-- If so, we show them. -->
         <p class="t-errors">
-        Username or Password Invalid - Please Try Again
+        Login Invalid - Please Try Again
         </p>
         {% endif %}
         <form method="POST">
-            <label>Username</label><br><input type="text" name="user"><br>
+            <label>Username *</label><br><input type="text" name="user"><br>
             <br>
-            <label>Password</label><br><input type="text" name="pass"><br>
+            <label>Password *</label><br><input type="text" name="pass"><br>
             <br>
-            <label>Email</label><br><input type="text" name="email"><br>
+            <label>Email *</label><br><input type="text" name="email"><br>
             <br>
             <input type="submit" value="Login">
         </form>
     </body>
-
 </html>

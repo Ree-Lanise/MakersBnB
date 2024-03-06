@@ -1,6 +1,7 @@
 from playwright.sync_api import Page, expect
-from flask import session
-
+from flask import Flask, request, render_template, redirect, session
+from lib.user_repository import UserRepository 
+from app import app
 # Tests for your routes go here
 
 """
@@ -8,7 +9,7 @@ We can render the index page
 """
 def test_get_index(page, test_web_address):
     # We load a virtual browser and navigate to the / page
-    page.goto(f"http://{test_web_address}")
+    page.goto(f"http://{test_web_address}/")
 
     # We look at the <p> tag
     h1_tag = page.locator("h1")
@@ -49,10 +50,10 @@ def test_get_login(page, test_web_address):
     page.goto(f"http://{test_web_address}/login")
 
     # We check the <h1> tag on that page
-    h1_tag = page.locator("h1")
+    h2_tag = page.locator("h2")
 
     # we assert that we expect it to say "login"
-    expect(h1_tag).to_have_text("Login")
+    expect(h2_tag).to_have_text("Login")
 
 """We have username and password headers"""
 
@@ -64,7 +65,7 @@ def test_input_user_pass(page, test_web_address):
     label_tags = page.locator("label")
 
     # we asser that we expect it to say username and password
-    expect(label_tags).to_have_text(["Username", "Password", "Email"])
+    expect(label_tags).to_have_text(["Username *", "Password *", "Email *"])
 
 """Tests the login button redirects us to the main index page"""
 
@@ -89,7 +90,23 @@ def test_we_have_details_before_login(page, test_web_address):
     page.click("input[type=submit][value='Login']")
     # we check the class t-error
     errors = page.locator(".t-errors")
-    expect(errors).to_have_text("Username or Password Invalid - Please Try Again")
+    expect(errors).to_have_text("Login Invalid - Please Try Again")
 
+"""
+tests that if you login as an existing user, it logs in that existing user 
+and doesn't create a new user.
+"""
+def tests_login_as_existing_user(page, test_web_address, db_connection):
+    db_connection.seed('seeds/Users.sql')
+    repo = UserRepository(db_connection)
+    
+    page.goto(f"http://{test_web_address}/login")
+    page.fill("input[name=user]", 'Maria')
+    page.fill("input[name=pass]", 'Password')
+    page.fill("input[name=email]", 'maria@gmail.com')
+    page.click("input[type=submit][value='Login']")
+    
+    assert not repo.find(6)
+    
         
 

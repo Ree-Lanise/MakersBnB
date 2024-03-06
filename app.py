@@ -21,11 +21,14 @@ def get_index():
     if 'user_id' not in session:
         return redirect('/login')
     else:
-        return render_template('index.html')
+        return render_template('index.html', user='username')
 
 @app.route("/login", methods=['GET'])
 def login():
-    return render_template('login.html')
+    if 'user_id' in session:
+        return redirect('/')    
+    else: 
+        return render_template('login.html')
 
 @app.route("/login", methods=['POST'])
 def login_post():
@@ -48,9 +51,9 @@ def login_post():
         repo.check_password(password, email)
         # set the user ID in session
         session['user_id'] = user.id
+        session['username'] = user.name
         return redirect("/") 
 
-    
     # Finally if they're not in our database but they're given us valid info, we add 
     # them and start their session
     else: 
@@ -58,7 +61,14 @@ def login_post():
         user = repo.find_by_email(email)
         # set the user ID in session 
         session['user_id'] = user.id
+        session['username'] = user.name
         return redirect('/')
+
+@app.route("/logout")
+def logout():
+    session.pop("username", None)
+    session.pop("user_id", None)
+    return redirect("/login")
 
 # GET /places
 # Returns the places page
