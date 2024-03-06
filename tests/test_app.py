@@ -54,9 +54,3 @@ def test_get_view_spaces(page, test_web_address):
     expect(h1_tag).to_have_text("Property Listings")
 
 
-
-def test_view_property(page, test_web_address, db_connection):
-    db_connection.seed("seeds/properties.sql")
-    page.goto(f"http://{test_web_address}/places/individual_property/1")
-    h2_tag = page.locator("h2")
-    expect(h2_tag).to_have_text("Chestnut Eco Lodge Woodland Escape")

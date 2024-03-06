@@ -8,6 +8,11 @@
         <h1>Book a Place</h1>
         <div><a href="/places">Book a Place</a> | <a href="/places/new">List a Place</a></div>
         <br>
+        {% for property in properties %}
+            <h3>{{property.name}}</h3>
+            <p>Price: £{{property.price}}/night</p>
+        {% endfor %}
+        <br>
         <h4><a href="/">Return to Homepage</a></h4>
     </body>
 </html>

@@ -23,7 +23,11 @@ def get_index():
 #   ; open http://localhost:5000/places
 @app.route('/places', methods=['GET'])
 def get_places():
-    return render_template('places/index.html')
+    connection = get_flask_database_connection(app)
+    repository = PropertyRepository(connection)
+    properties = repository.all()
+    return render_template('/places/index.html', properties=properties)
+    
 
 # GET /places/new
 # Returns the new place page
@@ -42,16 +46,7 @@ def get_add_new_place():
 def view_spaces():
     return render_template('/places/view_spaces.html')
 
-# /places/view_spaces
-# Lists current property
-# Try it:
-#   ; open http://localhost:5000/places/view_spaces/individual_property
-@app.route('/places/individual_property/<int:id>')
-def view_property(id):
-    connection = get_flask_database_connection(app)
-    repository = PropertyRepository(connection)
-    property = repository.find(id)
-    return render_template('/places/individual_property.html', property=property)
+
 
 
 # These lines start the server if you run this file directly
