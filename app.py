@@ -42,8 +42,8 @@ def login_post():
     password = request.form['pass']
     email = request.form['email']
     # we make sure their input is valid
-    if username == "" or password == "" or email == "":
-        return render_template("login.html", errors="Username or Password Invalid")
+    if " " in username  or " " in password or " " in email:
+        return render_template("login.html", errors="can't have spaces")
     
     # we check if the user exists in our database
     user = repo.find_by_email(email)

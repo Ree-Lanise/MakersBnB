@@ -11,15 +11,15 @@
         {% if errors %}
         <!-- If so, we show them. -->
         <p class="t-errors">
-        Login Invalid - Please Try Again
+        Login invalid - {{errors}}
         </p>
         {% endif %}
         <form method="POST">
-            <label>Username *</label><br><input type="text" name="user"><br>
+            <label>Username</label><br><input required type="text" name="user"><br>
             <br>
-            <label>Password *</label><br><input type="text" name="pass"><br>
+            <label>Password</label><br><input required type="text" name="pass"><br>
             <br>
-            <label>Email *</label><br><input type="text" name="email"><br>
+            <label>Email</label><br><input required type="text" name="email"><br>
             <br>
             <input type="submit" value="Login">
         </form>
