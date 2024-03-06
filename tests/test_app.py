@@ -80,7 +80,7 @@ def test_input_user_pass(page, test_web_address):
     label_tags = page.locator("label")
 
     # we asser that we expect it to say username and password
-    expect(label_tags).to_have_text(["Username *", "Password *", "Email *"])
+    expect(label_tags).to_have_text(["Username", "Password", "Email"])
 
 """Tests the login button redirects us to the main index page"""
 
@@ -102,10 +102,13 @@ def test_we_have_details_before_login(page, test_web_address):
     # we go to the login page 
     page.goto(f"http://{test_web_address}/login")
     # we click login before entering details
+    page.fill("input[name=user]", 'Us   er')
+    page.fill("input[name=pass]", 'Passw ord')
+    page.fill("input[name=email]", 'User@  email.com')
     page.click("input[type=submit][value='Login']")
     # we check the class t-error
     errors = page.locator(".t-errors")
-    expect(errors).to_have_text("Login Invalid - Please Try Again")
+    expect(errors).to_have_text("Login invalid - can't have spaces")
 
 """
 tests that if you login as an existing user, it logs in that existing user 
