@@ -20,10 +20,12 @@ class PropertyRepository:
     
     
     def create_space(self, property_instance):
-        self._connection.execute(
-        "INSERT INTO properties (name, description, price, user_id, booked_status) VALUES (%s, %s, %s, %s, %s)", 
+        rows = self._connection.execute(
+        "INSERT INTO properties (name, description, price, user_id, booked_status) VALUES (%s, %s, %s, %s, %s) RETURNING id", 
         [property_instance.name, property_instance.description, property_instance.price, property_instance.user_id, property_instance.booked_status])
-        return "Space successfully created!"
+        row = rows[0]
+        property_instance.id = row["id"]
+        return property_instance
     
     
     
