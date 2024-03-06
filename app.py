@@ -22,7 +22,7 @@ def get_index():
     if 'user_id' not in session:
         return redirect('/login')
     else:
-        return render_template('index.html', user='username')
+        return render_template('index.html')
 
 @app.route("/login", methods=['GET'])
 def login():
