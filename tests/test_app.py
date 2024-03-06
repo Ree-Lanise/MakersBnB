@@ -54,3 +54,52 @@ def test_get_view_spaces(page, test_web_address):
     expect(h1_tag).to_have_text("Book a Place")
 
 
+
+
+""" we can render the login page """
+
+def test_get_login(page, test_web_address):
+    # we go to the correct page within a virtual browser
+    page.goto(f"http://{test_web_address}/login")
+
+    # We check the <h1> tag on that page
+    h1_tag = page.locator("h1")
+
+    # we assert that we expect it to say "login"
+    expect(h1_tag).to_have_text("Login")
+
+"""We have username and password headers"""
+
+def test_input_user_pass(page, test_web_address):
+    # we go to the login page
+    page.goto(f"http://{test_web_address}/login")
+
+    # we check the label headers 
+    label_tags = page.locator("label")
+
+    # we asser that we expect it to say username and password
+    expect(label_tags).to_have_text(["Username", "Password"])
+
+"""Tests the login button redirects us to the main index page"""
+
+def test_when_we_click_login_button(page, test_web_address):
+    page.set_default_timeout(1000)
+    # we go to login page
+    page.goto(f"http://{test_web_address}/login")
+    # we fill in fields and we click the button
+    page.fill("input[name=user]", "Test User")
+    page.fill("input[name=pass]", "Test Pass")
+    page.click("input[type=submit][value='Login']")
+    # we check url and assert we have been redirected
+    assert page.url == f"http://{test_web_address}/"
+
+"""tests that we have to have input to login-otherwise throws an error"""
+def test_we_have_details_before_login(page, test_web_address):
+    page.set_default_timeout(1000)
+    # we go to the login page 
+    page.goto(f"http://{test_web_address}/login")
+    # we click login before entering details
+    page.click("input[type=submit][value='Login']")
+    # we check the class t-error
+    errors = page.locator(".t-errors")
+    expect(errors).to_have_text("Username or Password Invalid - Please Try Again")

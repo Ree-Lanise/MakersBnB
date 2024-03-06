@@ -1,8 +1,7 @@
 import os
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect
 from lib.database_connection import get_flask_database_connection
 from lib.property_repo import PropertyRepository
-
 
 # Create a new Flask app
 app = Flask(__name__)
@@ -16,6 +15,19 @@ app = Flask(__name__)
 @app.route('/', methods=['GET'])
 def get_index():
     return render_template('index.html')
+
+@app.route("/login", methods=['GET'])
+def login():
+    return render_template('login.html')
+
+@app.route("/login", methods=['POST'])
+def login_post():
+    username = request.form['user']
+    password = request.form['pass']
+    if username == "" or password == "":
+        return render_template("login.html", errors="Username or Password Invalid")
+    else:
+        return redirect("/")
 
 # GET /places
 # Returns the places page
@@ -37,16 +49,16 @@ def get_places():
 def get_add_new_place():
     return render_template('places/new.html')
 
-
-# /places/view_spaces
-# Lists current spaces
+# GET /places/1
+# Returns the page for a place by id
 # Try it:
-#   ; open http://localhost:5000/places/view_spaces
-@app.route('/places/view_spaces')
-def view_spaces():
-    return render_template('/places/view_spaces.html')
-
-
+#   ; open http://localhost:5000/places/1
+@app.route('/places/<int:id>', methods=['GET'])
+def get_place_by_id(id):
+    connection = get_flask_database_connection(app)
+    property_repo = PropertyRepository(connection)
+    property = property_repo.find(id)
+    return render_template('places/show.html', property=property)
 
 
 # These lines start the server if you run this file directly
