@@ -65,7 +65,7 @@ def login_post():
 # Returns the places page
 # Try it:
 #   ; open http://localhost:5000/places
-@app.route('/places', methods=['GET','POST'])
+@app.route('/places', methods=['GET'])
 def get_places():
     connection = get_flask_database_connection(app)
     repository = PropertyRepository(connection)
@@ -92,34 +92,19 @@ def get_place_by_id(id):
     property = property_repo.find(id)
     return render_template('places/show.html', property=property)
 
-@app.route("/places/new", methods=['GET','POST'])
+
+@app.route("/places", methods=['POST'])
 def create_new_place_post():
     db_connect = get_flask_database_connection(app)
     repo = PropertyRepository(db_connect)
-    if request.method == 'POST':
-        name = request.form['name']
-        description = request.form['description']
-        price = request.form['price']
-        user_id = request.form['user_id']
-        aval_start = request.form['aval_start']
-        aval_end = request.form['aval_end']
-        repo.create_space(Property(None, name, description, price, user_id, aval_start, aval_end))
-        return redirect("/places")
-    
-    # if request.method == 'POST':
-    #     name = request.form['name']
-    #     description = request.form['description']
-    #     price = request.form['price']
-    #     user_id = session['user_id']
-    #     aval_start = request.form['aval_start']
-    #     aval_end = request.form['aval_end']
-    #     result = repo.create_space(Property(None, name, description, price, user_id, aval_start, aval_end))
-    #     flash("Space has been successfully created!")
-    #     return result 
-    # else: 
-    #     redirect("/places")
-
-
+    name = request.form['name']
+    description = request.form['desc']
+    price = request.form['price']
+    user_id = session['user_id']
+    aval_start = request.form['aval_start']
+    aval_end = request.form['aval_end']
+    repo.create_space(Property(None, name, description, price, user_id, aval_start, aval_end))
+    return redirect("/places")
 
 
 # These lines start the server if you run this file directly

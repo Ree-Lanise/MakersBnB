@@ -10,15 +10,15 @@
         <br>
         <br>
         <form method="POST" action="/places">
-            <label>Name</label><br><input id="name" title="name"><br>
+            <label>Name</label><br><input name="name" title="name"><br>
             <br>
-            <label>Description</label><br><textarea id="desc" title="description"></textarea><br>
+            <label>Description</label><br><textarea name="desc" title="description"></textarea><br>
             <br>
-            <label>Price per night</label><br>£ <input type="number" title="price"><br>
+            <label>Price per night</label><br>£ <input type="number" name="price"><br>
             <br>
             <label>For which dates is your property available?</label>
             <br>
-            <br> From <input type="date" title="aval_start"> To <input type="date" title="aval_end"><br>
+            <br> From <input type="date" name="aval_start"> To <input type="date" name="aval_end"><br>
             <br>
             <input type="submit" value="Create listing">
         </form>
