@@ -4,6 +4,7 @@ from lib.database_connection import get_flask_database_connection
 from lib.user_repository import UserRepository
 from lib.user import User 
 from lib.property_repo import PropertyRepository
+from lib.property import Property
 
 # Create a new Flask app
 app = Flask(__name__)
@@ -100,6 +101,20 @@ def get_place_by_id(id):
     property_repo = PropertyRepository(connection)
     property = property_repo.find(id)
     return render_template('places/show.html', property=property)
+
+
+@app.route("/places", methods=['POST'])
+def create_new_place_post():
+    db_connect = get_flask_database_connection(app)
+    repo = PropertyRepository(db_connect)
+    name = request.form['name']
+    description = request.form['desc']
+    price = request.form['price']
+    user_id = session['user_id']
+    aval_start = request.form['aval_start']
+    aval_end = request.form['aval_end']
+    repo.create_space(Property(None, name, description, price, user_id, aval_start, aval_end))
+    return redirect("/places")
 
 
 # These lines start the server if you run this file directly
