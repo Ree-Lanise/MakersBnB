@@ -66,7 +66,11 @@ def login_post():
 #   ; open http://localhost:5000/places
 @app.route('/places', methods=['GET'])
 def get_places():
-    return render_template('places/index.html')
+    connection = get_flask_database_connection(app)
+    repository = PropertyRepository(connection)
+    properties = repository.all()
+    return render_template('/places/index.html', properties=properties)
+    
 
 # GET /places/new
 # Returns the new place page
