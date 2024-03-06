@@ -4,6 +4,7 @@ from lib.database_connection import get_flask_database_connection
 from lib.user_repository import UserRepository
 from lib.user import User 
 from lib.property_repo import PropertyRepository
+from lib.property import Property
 
 # Create a new Flask app
 app = Flask(__name__)
@@ -64,7 +65,7 @@ def login_post():
 # Returns the places page
 # Try it:
 #   ; open http://localhost:5000/places
-@app.route('/places', methods=['GET'])
+@app.route('/places', methods=['GET','POST'])
 def get_places():
     connection = get_flask_database_connection(app)
     repository = PropertyRepository(connection)
@@ -91,16 +92,34 @@ def get_place_by_id(id):
     property = property_repo.find(id)
     return render_template('places/show.html', property=property)
 
-@app.route("/places", methods=['POST'])
-def login_post():
-    # we establish a connection to the database 
+@app.route("/places/new", methods=['GET','POST'])
+def create_new_place_post():
     db_connect = get_flask_database_connection(app)
-    repo = UserRepository(db_connect)
+    repo = PropertyRepository(db_connect)
+    if request.method == 'POST':
+        name = request.form['name']
+        description = request.form['description']
+        price = request.form['price']
+        user_id = request.form['user_id']
+        aval_start = request.form['aval_start']
+        aval_end = request.form['aval_end']
+        repo.create_space(Property(None, name, description, price, user_id, aval_start, aval_end))
+        return redirect("/places")
     
-    # we grab the user input from the login page
-    username = request.form['user']
-    password = request.form['pass']
-    email = request.form['email']
+    # if request.method == 'POST':
+    #     name = request.form['name']
+    #     description = request.form['description']
+    #     price = request.form['price']
+    #     user_id = session['user_id']
+    #     aval_start = request.form['aval_start']
+    #     aval_end = request.form['aval_end']
+    #     result = repo.create_space(Property(None, name, description, price, user_id, aval_start, aval_end))
+    #     flash("Space has been successfully created!")
+    #     return result 
+    # else: 
+    #     redirect("/places")
+
+
 
 
 # These lines start the server if you run this file directly
