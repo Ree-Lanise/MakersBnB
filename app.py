@@ -49,7 +49,7 @@ def login_post():
     
     if user: 
         repo.check_password(password, email)
-        # set the user ID in session
+        # set the user ID and username in session
         session['user_id'] = user.id
         session['username'] = user.name
         return redirect("/") 
