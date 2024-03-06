@@ -64,7 +64,7 @@ def test_input_user_pass(page, test_web_address):
     label_tags = page.locator("label")
 
     # we asser that we expect it to say username and password
-    expect(label_tags).to_have_text(["Username", "Password"])
+    expect(label_tags).to_have_text(["Username", "Password", "Email"])
 
 """Tests the login button redirects us to the main index page"""
 
@@ -73,8 +73,9 @@ def test_when_we_click_login_button(page, test_web_address):
     # we go to login page
     page.goto(f"http://{test_web_address}/login")
     # we fill in fields and we click the button
-    page.fill("input[name=user]", "Test User")
-    page.fill("input[name=pass]", "Test Pass")
+    page.fill("input[name=user]", 'User')
+    page.fill("input[name=pass]", 'Password')
+    page.fill("input[name=email]", 'User@email.com')
     page.click("input[type=submit][value='Login']")
     # we check url and assert we have been redirected
     assert page.url == f"http://{test_web_address}/"
@@ -90,13 +91,5 @@ def test_we_have_details_before_login(page, test_web_address):
     errors = page.locator(".t-errors")
     expect(errors).to_have_text("Username or Password Invalid - Please Try Again")
 
-"""tests we create a session with a new login"""
-def test_create_session(page, test_web_address):
-    page.set_default_timeout(1000)
-    # we go to the login page 
-    page.goto(f"http://{test_web_address}/login")
-    # we fill in fields and we click the button
-    page.fill("input[name=user]", "Test User")
-    page.fill("input[name=pass]", "Test Pass")
-    page.click("input[type=submit][value='Login']")
+        
 

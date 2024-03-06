@@ -12,6 +12,13 @@ class UserRepository:
         row = rows[0]
         return User(row["id"], row["name"], row["password"], row["email"])
         
+    def find_by_email(self, email):
+        rows = self._connection.execute('SELECT * FROM users WHERE email = %s', [email])
+        if rows == []: 
+            return False
+        row = rows[0]
+        return User(row["id"], row["name"], row["password"], row["email"])
+        
 
     def create(self, user):
         rows = self._connection.execute('INSERT INTO users(name, password, email) VALUES (%s, %s, %s) RETURNING id', 
@@ -21,12 +28,11 @@ class UserRepository:
         return user
 
     def check_password(self, email, password_attempt):
-        # hash the password attempt to hide it
-        binary_password_attempt = password_attempt.encode("utf-8")
-        hashed_password_attempt = hashlib.sha256(binary_password_attempt).hexdigest()
         # check whether there is a user in the database with the given email and 
         # a matching password using a SELECT statement
+        print(email, password_attempt)
         rows = self._connection.execute(
-            'SELECT * FROM users WHERE email =%s AND password = %s', 
-            [email, hashed_password_attempt])
+            'SELECT * FROM users WHERE email = %s AND password = %s', 
+            [email, password_attempt])
+        print(rows)
         return len(rows) > 0
