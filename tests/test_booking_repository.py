@@ -39,7 +39,7 @@ def test_delete(db_connection):
     booking_to_delete = Booking(None, 1, 2, 1, datetime.date(2023,4,1), datetime.date(2023,4,5))
     repo.create(booking_to_delete)
     repo.delete(booking_to_delete)
-    assert repo.all() ==  [Booking(1, 1, 5, 1, datetime.date(2023, 3, 1), datetime.date(2023,3,5)),
+    assert repo.all() == [Booking(1, 1, 5, 1, datetime.date(2023, 3, 1), datetime.date(2023,3,5)),
                         Booking(2, 2, 4, 2, datetime.date(2023,3,5), datetime.date(2023,3,8)),
                         Booking(3, 3, 3, 3, datetime.date(2023,3,11), datetime.date(2023,3,15)),
                         Booking(4, 4, 2, 4, datetime.date(2023,3,21), datetime.date(2023,3,27)),
