@@ -24,15 +24,15 @@ class BookingRepository():
         return booking
     
     def update(self, id):
-        rows = self._connection.execute(
+        self._connection.execute(
             "UPDATE bookings SET status = 'Confirmed' WHERE id = %s",[id])
         
     def delete(self, id):
         self._connection.execute(
             "DELETE FROM bookings WHERE id = %s",[id])
         
-    def all_by_id(self, id):
-        rows = self._connection.execute("SELECT * FROM bookings WHERE id = %s", [id])
+    def all_by_id(self, session_id):
+        rows = self._connection.execute("SELECT * FROM bookings WHERE id = %s", [session_id])
         bookings = []
         for row in rows:
             booking = Booking(row['id'], row['property_id'], row['owner_id'], row['guest_id'], row['starting_date'], row['end_date'], row['status'], row['name'])
