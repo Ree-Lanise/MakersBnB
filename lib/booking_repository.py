@@ -24,15 +24,10 @@ class BookingRepository():
         booking.id = row["id"]
         return booking
     
-    def delete(self, booking):
-        self._connection.execute("DELETE FROM bookings WHERE id = %s AND property_id = %s AND owner_id = %s AND guest_id = %s AND starting_date = %s AND end_date = %s AND status = %s AND name = %s", 
-                                [booking.id, booking.property_id, booking.owner_id, booking.guest_id, booking.starting_date, booking.end_date, booking.status, booking.name])
+    def update(self, id):
+        rows = self._connection.execute(
+            "UPDATE bookings SET status = %s WHERE id = %s",[id])
         
-
-    def all_by_id(self, session_id):
-        rows = self._connection.execute("SELECT * FROM bookings WHERE owner_id = %s", [session_id])
-        bookings = []
-        for row in rows:
-            booking = Booking(row['id'], row['property_id'], row['owner_id'], row['guest_id'], row['starting_date'], row['end_date'], row['status'], row['name'])
-            bookings.append(booking)
-        return bookings
+        
+        
+    #update method "SELECT * FROM bookings WHERE id=%s",[ownwer_id]
