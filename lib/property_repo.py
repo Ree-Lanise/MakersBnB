@@ -28,7 +28,17 @@ class PropertyRepository:
         property_instance.id = row["id"]
         return property_instance
     
+    def delete(self, id):
+        self._connection.execute(
+            "DELETE FROM properties WHERE id = %s",[id])
     
+    def all_by_id(self, session_id):
+        rows = self._connection.execute("SELECT * FROM properties WHERE user_id = %s", [session_id])
+        properties = []
+        for row in rows:
+            property = Property(row['id'], row['name'], row['description'], row['price'], row['user_id'], row['available_start'], row['available_end'])
+            properties.append(property)
+        return properties
     
         
         

@@ -8,6 +8,7 @@ from lib.booking_repository import BookingRepository
 from lib.booking import Booking
 from lib.property import Property
 from lib.validator import * 
+from datetime import datetime
 
 # Create a new Flask app
 app = Flask(__name__)
@@ -48,10 +49,10 @@ def login_post():
     # we make sure their input is valid
     if Validator.check_spaces(username, password, email):
         return render_template("login.html", errors=Validator.space_error)
-    # all these references validator.py class in top-level folder 
+    # all these references validator.py class in lib folder 
     if Validator.check_password_invalid(password): 
         return render_template("login.html", errors=Validator.password_error)
-    
+
     if not Validator.check_email(email):
         return render_template("login.html", errors=Validator.email_error)
 
@@ -78,6 +79,7 @@ def login_post():
 def logout():
     session.pop("username", None)
     session.pop("user_id", None)
+    session.clear()
     return redirect("/login")
 
 # GET /places
@@ -129,7 +131,8 @@ def book_a_place():
     guest_id = session['user_id']
     start_date = request.form['start_date']
     end_date = request.form['end_date']
-    booking = booking_repo.create(Booking(None, property_id, owner_id, guest_id, start_date, end_date))
+    name = request.form['name']
+    booking = booking_repo.create(Booking(None, property_id, owner_id, guest_id, start_date, end_date, None, name))
     return redirect(f"/bookings/{booking.id}")
 
 
@@ -146,6 +149,48 @@ def create_new_place_post():
     repo.create_space(Property(None, name, description, price, user_id, aval_start, aval_end))
     return redirect("/places")
 
+
+@app.route("/requests", methods=['GET'])
+def view_property_requests():
+    db_connect = get_flask_database_connection(app)
+    repo = BookingRepository(db_connect)
+    rows = repo.all_by_owner_id(session["user_id"])
+    bookings = repo.all_by_user_id(session["user_id"])
+    return render_template('bookings/requests.html', rows=rows, bookings=bookings)
+
+@app.route("/requests/<int:id>", methods=['GET'])
+def get_individual_booking(id):
+    db_connect = get_flask_database_connection(app)
+    repo = BookingRepository(db_connect)
+    user_repo = UserRepository(db_connect)
+    property_repo = PropertyRepository(db_connect)
+    booking = repo.find(id)
+    user = user_repo.find(booking.guest_id)
+    property_ = property_repo.find(booking.property_id)
+    total_duration = booking.end_date - booking.starting_date
+    total_price = total_duration.days * property_.price
+    return render_template('bookings/single_request.html', booking=booking, property_=property_, user=user, price=total_price)
+
+@app.route('/requests', methods=['POST'])
+def confirm_deny():
+    db_connect = get_flask_database_connection(app)
+    repo = BookingRepository(db_connect)
+    confirm = request.form.get("confirm")
+    deny = request.form.get("deny")
+    if confirm is not None: 
+        repo.update(confirm)
+    if deny is not None: 
+        repo.delete(deny)
+    return redirect("/requests")
+
+@app.route('/your_properties', methods=['GET'])
+def get_your_properties():
+    db_connect = get_flask_database_connection(app)
+    repo = PropertyRepository(db_connect)
+    rows = repo.all_by_id(session['user_id'])
+    return render_template('your_properties.html', rows=rows)
+    
+        
 
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database

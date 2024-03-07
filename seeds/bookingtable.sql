@@ -9,18 +9,20 @@ CREATE TABLE bookings (
     guest_id INTEGER,
     starting_date DATE, 
     end_date DATE,
+    status TEXT,
+    name TEXT,
     FOREIGN KEY (property_id) REFERENCES properties(id) on delete cascade,
     FOREIGN KEY(owner_id) REFERENCES users(id) on delete cascade,
     FOREIGN KEY(guest_id) REFERENCES users(id) on delete cascade );
 
 -- finally, we add any records that are needed for the tests to run
-INSERT INTO bookings (property_id, owner_id, guest_id, starting_date, end_date) VALUES ( 
-    1, 5, 1, '2023-03-01', '2023-03-05'); 
-INSERT INTO bookings (property_id, owner_id, guest_id, starting_date, end_date) VALUES ( 
-    2, 4, 2, '2023-03-05', '2023-03-08'); 
-INSERT INTO bookings (property_id, owner_id, guest_id, starting_date, end_date) VALUES ( 
-    3, 3, 3, '2023-03-11', '2023-03-15'); 
-INSERT INTO bookings (property_id, owner_id, guest_id, starting_date, end_date) VALUES ( 
-    4, 2, 4, '2023-03-21', '2023-03-27'); 
-INSERT INTO bookings (property_id, owner_id, guest_id, starting_date, end_date) VALUES ( 
-    5, 1, 5, '2023-03-01', '2023-03-03'); 
+INSERT INTO bookings (property_id, owner_id, guest_id, starting_date, end_date, status, name) VALUES ( 
+    1, 5, 1, '2023-03-01', '2023-03-05', 'pending', 'Chestnut Eco Lodge Woodland Escape'); 
+INSERT INTO bookings (property_id, owner_id, guest_id, starting_date, end_date, status, name) VALUES ( 
+    2, 4, 2, '2023-03-05', '2023-03-08', 'pending', 'The Hazel Hide'); 
+INSERT INTO bookings (property_id, owner_id, guest_id, starting_date, end_date, status, name) VALUES ( 
+    3, 3, 3, '2023-03-11', '2023-03-15', 'pending', 'Entire Contemporary Barn'); 
+INSERT INTO bookings (property_id, owner_id, guest_id, starting_date, end_date, status, name) VALUES ( 
+    4, 2, 4, '2023-03-21', '2023-03-27', 'confirmed', 'Coloc All Included Febvotte-Marat'); 
+INSERT INTO bookings (property_id, owner_id, guest_id, starting_date, end_date, status, name) VALUES ( 
+    5, 1, 5, '2023-03-01', '2023-03-03', 'confirmed', '2RJ2- Hyper center.'); 
