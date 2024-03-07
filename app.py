@@ -163,12 +163,18 @@ def get_individual_booking(id):
     return render_template('bookings/single_request.html', booking=booking, property_=property_, user=user, price=total_price)
 
 @app.route('/requests', methods=['POST'])
-def deny_request():
+def confirm_deny():
     db_connect = get_flask_database_connection(app)
     repo = BookingRepository(db_connect)
-    submission = request.form['submit']
-    if submission == "Deny Request":
-        repo.delete()
+    confirm = request.form.get("confirm")
+    deny = request.form.get("deny")
+    if confirm is not None: 
+        repo.update(confirm)
+    if deny is not None: 
+        repo.delete(deny)
+    return redirect("/requests")
+
+    
         
 
 # These lines start the server if you run this file directly

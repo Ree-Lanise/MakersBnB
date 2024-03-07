@@ -15,8 +15,10 @@
         <p>From {{booking.starting_date}} to {{booking.end_date}}</p>
         <p>Price per night: £{{property_.price}}</p>
         <p>Total cost for stay £{{price}}</p>
-        <input type="submit" value="Confirm Request">
-        <input type="submit" value="Deny Request">
+        <form method="POST" action="/requests">
+            <button name="confirm" value="{{booking.id}}">Confirm Request</button>
+            <button name="deny" value="{{booking.id}}">Deny Request</button>
+        </form>
         <br>
         <br>
         <div><a href="/requests">See more requests</a> | <a href="/">Back to homepage</a></div>
