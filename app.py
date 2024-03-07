@@ -49,10 +49,10 @@ def login_post():
     # we make sure their input is valid
     if Validator.check_spaces(username, password, email):
         return render_template("login.html", errors=Validator.space_error)
-    # all these references validator.py class in top-level folder 
+    # all these references validator.py class in lib folder 
     if Validator.check_password_invalid(password): 
         return render_template("login.html", errors=Validator.password_error)
-    
+
     if not Validator.check_email(email):
         return render_template("login.html", errors=Validator.email_error)
 
