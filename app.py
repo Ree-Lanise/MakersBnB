@@ -139,7 +139,22 @@ def create_new_place_post():
     repo.create_space(Property(None, name, description, price, user_id, aval_start, aval_end))
     return redirect("/places")
 
-
+@app.route('/bookings/<int:id>', methods=['PUT'])
+def manage_bookings(id):
+    connection = get_flask_database_connection(app)
+    booking_repo = BookingRepository
+    booking = booking_repo.update(id)
+    booking.status = 'Confirm'
+    return redirect("/bookings")
+    
+    
+    
+#     @app.route(‘/bookings/<int:id>’, methods=[‘PUT’])
+# Def some_method_name(id):
+# 	connection …
+# 	booking_repo = BookingRepo…
+# 	booking = booking_repo.find(id)
+# 	booking.status = ‘confirm’
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database
 # if started in test mode.

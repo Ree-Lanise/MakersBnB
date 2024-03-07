@@ -30,4 +30,14 @@ def test_create(db_connection):
     new_booking = repo.create(Booking(None, 1, 2, 1, datetime.date(2023,4,1), datetime.date(2023,4,5)))
     result = repo.find(new_booking.id)
     assert result == new_booking
+    
+def test_update(db_connection):
+    db_connection.seed('seeds/Users.sql')
+    db_connection.seed('seeds/properties.sql')
+    db_connection.seed('seeds/bookingtable.sql')
+    repo = BookingRepository(db_connection)
+    
+    # manage_booking = repo.update(manage_booking.booking_status)
+    # result = repo.find(manage_booking.id)
+    # assert result == manage_booking
 
