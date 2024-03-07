@@ -9,6 +9,7 @@ CREATE TABLE bookings (
     guest_id INTEGER,
     starting_date DATE, 
     end_date DATE,
+    status TEXT
     FOREIGN KEY (property_id) REFERENCES properties(id) on delete cascade,
     FOREIGN KEY(owner_id) REFERENCES users(id) on delete cascade,
     FOREIGN KEY(guest_id) REFERENCES users(id) on delete cascade );
