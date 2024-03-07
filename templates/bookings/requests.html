@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Booking Requests</title>
+        <link rel="stylesheet" href="/static/style.css" >
+    </head>
+    <body>
+        <h1>Booking Requests for {{session['username']}}</h1>
+        <div><a href="/places">Book a Place</a> | <a href="/places/new">List a Place</a></div>
+        <br>
+        {% for row in rows %}
+            <h3><a href="/requests/{{row.id}}">{{row.name}}</a></h3>
+            <p>Property Status: {{row.status}}</p>
+        {% endfor %}
+        <br>
+        <h4><a href="/">Return to Homepage</a></h4>
+    </body>
+</html

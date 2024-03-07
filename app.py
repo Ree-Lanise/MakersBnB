@@ -122,7 +122,8 @@ def book_a_place():
     guest_id = session['user_id']
     start_date = request.form['start_date']
     end_date = request.form['end_date']
-    booking = booking_repo.create(Booking(None, property_id, owner_id, guest_id, start_date, end_date))
+    name = request.form['name']
+    booking = booking_repo.create(Booking(None, property_id, owner_id, guest_id, start_date, end_date, None, name))
     return redirect(f"/bookings/{booking.id}")
 
 
@@ -138,6 +139,16 @@ def create_new_place_post():
     aval_end = request.form['aval_end']
     repo.create_space(Property(None, name, description, price, user_id, aval_start, aval_end))
     return redirect("/places")
+
+
+@app.route("/requests", methods=['GET'])
+def view_property_requests():
+    db_connect = get_flask_database_connection(app)
+    repo = BookingRepository(db_connect)
+    rows = repo.all_by_id(session["user_id"])
+    if rows == []:
+        rows = ["No bookings"]
+    return render_template('bookings/requests.html', rows=rows)
 
 
 # These lines start the server if you run this file directly
