@@ -25,4 +25,5 @@ class BookingRepository():
         return booking
     
     def delete(self, booking):
-        pass
+        self._connection.execute("DELETE FROM bookings WHERE id = %s AND property_id = %s AND owner_id = %s AND guest_id = %s AND starting_date = %s AND end_date = %s", 
+                                [booking.id, booking.property_id, booking.owner_id, booking.guest_id, booking.starting_date, booking.end_date])
