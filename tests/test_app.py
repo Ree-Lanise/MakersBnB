@@ -90,8 +90,8 @@ def test_when_we_click_login_button(page, test_web_address):
     page.goto(f"http://{test_web_address}/login")
     # we fill in fields and we click the button
     page.fill("input[name=user]", 'User')
-    page.fill("input[name=pass]", 'Password')
-    page.fill("input[name=email]", 'User@email.com')
+    page.fill("input[name=pass]", 'Password12!@$%')
+    page.fill("input[name=email]", 'gepaul97@gmail.com')
     page.click("input[type=submit][value='Login']")
     # we check url and assert we have been redirected
     assert page.url == f"http://{test_web_address}/"

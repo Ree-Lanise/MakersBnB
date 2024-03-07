@@ -7,6 +7,7 @@ from lib.property_repo import PropertyRepository
 from lib.booking_repository import BookingRepository
 from lib.booking import Booking
 from lib.property import Property
+from lib.validator import * 
 from datetime import datetime
 
 # Create a new Flask app
@@ -44,20 +45,26 @@ def login_post():
     username = request.form['user']
     password = request.form['pass']
     email = request.form['email']
-    # we make sure their input is valid
-    if " " in username  or " " in password or " " in email:
-        return render_template("login.html", errors="can't have spaces")
     
+    # we make sure their input is valid
+    if Validator.check_spaces(username, password, email):
+        return render_template("login.html", errors=Validator.space_error)
+    # all these references validator.py class in top-level folder 
+    if Validator.check_password_invalid(password): 
+        return render_template("login.html", errors=Validator.password_error)
+    
+    if not Validator.check_email(email):
+        return render_template("login.html", errors=Validator.email_error)
+
     # we check if the user exists in our database
     user = repo.find_by_email(email)
-    
     if user: 
         repo.check_password(password, email)
         # set the user ID and username in session
         session['user_id'] = user.id
         session['username'] = user.name
         return redirect("/") 
-
+    
     # Finally if they're not in our database but they're given us valid info, we add 
     # them and start their session
     else: 
