@@ -72,6 +72,7 @@ def login_post():
 def logout():
     session.pop("username", None)
     session.pop("user_id", None)
+    session.clear()
     return redirect("/login")
 
 # GET /places
@@ -146,8 +147,9 @@ def create_new_place_post():
 def view_property_requests():
     db_connect = get_flask_database_connection(app)
     repo = BookingRepository(db_connect)
-    rows = repo.all_by_id(session["user_id"])
-    return render_template('bookings/requests.html', rows=rows)
+    rows = repo.all_by_owner_id(session["user_id"])
+    bookings = repo.all_by_user_id(session["user_id"])
+    return render_template('bookings/requests.html', rows=rows, bookings=bookings)
 
 @app.route("/requests/<int:id>", methods=['GET'])
 def get_individual_booking(id):
@@ -174,6 +176,12 @@ def confirm_deny():
         repo.delete(deny)
     return redirect("/requests")
 
+@app.route('/your_properties', methods=['GET'])
+def get_your_properties():
+    db_connect = get_flask_database_connection(app)
+    repo = PropertyRepository(db_connect)
+    rows = repo.all_by_id(session['user_id'])
+    return render_template('your_properties.html', rows=rows)
     
         
 

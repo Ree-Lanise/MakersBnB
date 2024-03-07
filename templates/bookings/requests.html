@@ -5,15 +5,25 @@
         <link rel="stylesheet" href="/static/style.css" >
     </head>
     <body>
-        <h1>Booking Requests for {{session['username']}}</h1>
+        <h1>Bookings/Requests for {{session['username']}}</h1>
         <div><a href="/places">Book a Place</a> | <a href="/places/new">List a Place</a></div>
         <br>
+        <h3>Requests</h3>
         {% if not rows %}
-        NO BOOKINGS
+        NO REQUESTS
         {% endif %}
         {% for row in rows %}
             <h3><a href="/requests/{{row.id}}">{{row.name}}</a></h3>
-            <p>Property Status: {{row.status}}</p>
+            <p>Status: {{row.status}}</p>
+        {% endfor %}
+        <br>
+        <h3>Bookings</h3>
+        {% if not bookings %}
+        NO BOOKINGS
+        {% endif %}
+        {% for booking in bookings %}
+            <h3><a href="/requests/{{booking.id}}">{{booking.name}}</a></h3>
+            <p>Status: {{booking.status}}</p>
         {% endfor %}
         <br>
         <h4><a href="/">Return to Homepage</a></h4>

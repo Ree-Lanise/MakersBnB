@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Your Properties</title>
+        <link rel="stylesheet" href="/static/style.css" >
+    </head>
+    <body>
+        <h1>Properties</h1>
+        <div><a href="/places">Book a Place</a> | <a href="/places/new">List a Place</a></div>
+        <br>
+        {% if not rows %}
+        No properties 
+        {% endif %}
+        
+        {% for row in rows %}
+            <h3><a href="/places/{{row.id}}">{{row.name}}</a></h3>
+            <p>Price: £{{row.price}}/night</p>
+        {% endfor %}
+        <br>
+        <h4><a href="/">Return to Homepage</a></h4>
+    </body>
+</html>
