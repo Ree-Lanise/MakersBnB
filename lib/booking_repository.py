@@ -23,3 +23,6 @@ class BookingRepository():
         row = rows[0]
         booking.id = row["id"]
         return booking
+    
+    def delete(self, booking):
+        pass
