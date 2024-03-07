@@ -20,6 +20,6 @@ class Validator():
             return True 
                 
     def check_email(email):
-        pattern = re.compile("[A-Za-z0-9_%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}")
-        return pattern.match(email)
+        pattern = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+        return re.match(pattern, email) is not None 
 
