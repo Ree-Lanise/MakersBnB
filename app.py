@@ -7,6 +7,7 @@ from lib.property_repo import PropertyRepository
 from lib.booking_repository import BookingRepository
 from lib.booking import Booking
 from lib.property import Property
+from datetime import datetime
 
 # Create a new Flask app
 app = Flask(__name__)
@@ -146,10 +147,29 @@ def view_property_requests():
     db_connect = get_flask_database_connection(app)
     repo = BookingRepository(db_connect)
     rows = repo.all_by_id(session["user_id"])
-    if rows == []:
-        rows = ["No bookings"]
     return render_template('bookings/requests.html', rows=rows)
 
+@app.route("/requests/<int:id>", methods=['GET'])
+def get_individual_booking(id):
+    db_connect = get_flask_database_connection(app)
+    repo = BookingRepository(db_connect)
+    user_repo = UserRepository(db_connect)
+    property_repo = PropertyRepository(db_connect)
+    booking = repo.find(id)
+    user = user_repo.find(booking.guest_id)
+    property_ = property_repo.find(booking.property_id)
+    total_duration = booking.end_date - booking.starting_date
+    total_price = total_duration.days * property_.price
+    return render_template('bookings/single_request.html', booking=booking, property_=property_, user=user, price=total_price)
+
+@app.route('/requests', methods=['POST'])
+def deny_request():
+    db_connect = get_flask_database_connection(app)
+    repo = BookingRepository(db_connect)
+    submission = request.form['submit']
+    if submission == "Deny Request":
+        repo.delete()
+        
 
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database

@@ -29,7 +29,6 @@ class BookingRepository():
                                 [booking.id, booking.property_id, booking.owner_id, booking.guest_id, booking.starting_date, booking.end_date, booking.status, booking.name])
         
 
-
     def all_by_id(self, session_id):
         rows = self._connection.execute("SELECT * FROM bookings WHERE owner_id = %s", [session_id])
         bookings = []

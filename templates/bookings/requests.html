@@ -8,6 +8,9 @@
         <h1>Booking Requests for {{session['username']}}</h1>
         <div><a href="/places">Book a Place</a> | <a href="/places/new">List a Place</a></div>
         <br>
+        {% if not rows %}
+        NO BOOKINGS
+        {% endif %}
         {% for row in rows %}
             <h3><a href="/requests/{{row.id}}">{{row.name}}</a></h3>
             <p>Property Status: {{row.status}}</p>

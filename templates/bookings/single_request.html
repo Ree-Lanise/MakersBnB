@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{ property_.name }}</title>
+        <link rel="stylesheet" href="/static/style.css" >
+    </head>
+    <body>
+        <h1>Booking for {{property_.name}}</h1>
+        <p>{{property_.description}}</p>
+        <div><a href="/places">Book a Place</a> | <a href="/places/new">List a Place</a></div>
+        <br>
+        <p>Booking by: {{user.name}}
+        <br>Email: {{user.email}}
+        </p>
+        <p>From {{booking.starting_date}} to {{booking.end_date}}</p>
+        <p>Price per night: £{{property_.price}}</p>
+        <p>Total cost for stay £{{price}}</p>
+        <input type="submit" value="Confirm Request">
+        <input type="submit" value="Deny Request">
+        <br>
+        <br>
+        <div><a href="/requests">See more requests</a> | <a href="/">Back to homepage</a></div>
